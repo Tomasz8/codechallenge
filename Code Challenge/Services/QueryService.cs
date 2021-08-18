@@ -22,13 +22,13 @@ namespace Code_Challenge.Services
             _driverRepository = driverRepository;
         }
 
-        //this should be parametrized (age, country, month, year)
-        public double DistanceDrivers50GermanyFeb2018()
+        //can be called as DistanceForDrivers(50, "Germany", 2018, 2)
+        public double DistanceForDrivers(int age, string country, int year, int month)
         {
-            var drivers50 = _driverRepository.GetAll(x => x.Age == 50);
+            var drivers50 = _driverRepository.GetAll(x => x.Age == age);
             var truckPlans = _truckPlanRepository
-                                .GetAll(x => x.Date.Year == 2018 && x.Date.Month == 2
-                                            && x.Country.Equals("Germany", StringComparison.CurrentCultureIgnoreCase)
+                                .GetAll(x => x.Date.Year == year && x.Date.Month == month
+                                            && x.Country.Equals(country, StringComparison.CurrentCultureIgnoreCase)
                                             && drivers50.Select(x => x.Id).Contains(x.DriverId));
             return truckPlans.Sum(x => _truckPlanService.CalculateDistance(x));                                        
 
